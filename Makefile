@@ -6,13 +6,12 @@
 #    By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/01 19:17:04 by mpuig-ma          #+#    #+#              #
-#    Updated: 2023/06/01 19:31:08 by mpuig-ma         ###   ########.fr        #
+#    Updated: 2023/06/02 18:51:57 by mpuig-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 AUTHOR		?=	mpuig-ma
 NAME		:=	philo
-
 BUILD_DIR	:=	build
 SRC_DIR		:=	src
 
@@ -27,8 +26,8 @@ NOSTYLE		:=	\033[0m
 STYLE		:=	\033[0;32m
 
 SRC_FILES	:=	$(SRC_DIR)/main.c
-OBJ_FILES	=	$(SRC_FILES:%.c=$(BUILD_DIR)/%.o)
-DEP_FILES	=	$(SRC_FILES:%.c=$(BUILD_DIR)/%.d)
+OBJ_FILES	=	$(SRC_FILES:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
+DEP_FILES	=	$(OBJ_FILES:.o=.d)
 
 .PHONY: all clean fclean re
 
@@ -38,8 +37,8 @@ $(NAME): $(OBJ_FILES) $(DEP_FILES) #header?
 	$(CC) $(INC) $(CFLAGS) $(OBJ_FILES) -o $(NAME)
 	@echo "Built $(STYLE)$(basename $@)$(NOSTYLE)"
 
-$(BUILD_DIR)/%.o: %.c
-	@mkdir -p $(@D)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
 	$(CC) $(INC) $(CFLAGS) -c $< -o $@
 
 clean:
