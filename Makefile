@@ -6,7 +6,7 @@
 #    By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/01 19:17:04 by mpuig-ma          #+#    #+#              #
-#    Updated: 2023/06/05 18:07:45 by mpuig-ma         ###   ########.fr        #
+#    Updated: 2023/06/05 19:28:20 by mpuig-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC_DIR		:=	src
 CC			:=	gcc
 CFLAGS		:=	-Wall -Werror -Wextra
 CFLAGS		+=	-MMD
-CFLAGS		+=	-g -fsanitize='address,undefined'
+#CFLAGS		+=	-g -fsanitize='address,undefined'
 INC			:=	-I $(SRC_DIR)
 RM			:=	rm -rf
 
