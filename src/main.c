@@ -6,48 +6,51 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/02 19:07:18 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/05 18:08:22 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int		check_args(int argc, char **argv);
-int		usage(void);
-size_t	ft_strlen(const char *str);
+typedef struct s_data
+{
+	int	n_philo;
+	int	tt_die;
+	int	tt_eat;
+	int	tt_sleep;
+	int	n_times_eat;
+}		t_data;
+
+int		check_args(int argc, char **argv, t_data *data);
 
 int	main(int argc, char **argv)
 {
-	check_args(argc, argv);
-	return (0);
+	t_data	data;
+
+	if (check_args(argc, argv, &data) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
-int	check_args(int argc, char **argv)
+int	check_args(int argc, char **argv, t_data *data)
 {
+	int	i;
+
+	i = 1;
 	if (argc != 5 && argc != 6)
-		return (usage());
-	(void) argv;
-	return (0);
-}
-
-int	usage(void)
-{
-	const char	*usage_str = "Usage: n_philosophers tt_die tt_eat tt_sleep [n_eat_times]\n";
-
-	return (write(2, usage_str, ft_strlen(usage_str)));
-}
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	nbytes;
-	char	*s;
-
-	nbytes = 0;
-	s = (char *) str;
-	while (s && *s != '\0')
+		return (ft_putstr_fd(USAGE, STDERR_FILENO));
+	while (i < argc)
 	{
-		++nbytes;
-		++s;
+		if (argv[i] == NULL || *argv[i] == '\0' || str_isdigit(argv[i]) != 0)
+			return (EXIT_FAILURE);
+		++i;
 	}
-	return (nbytes);
+	data->n_times_eat = -1;
+	data->n_philo = atoi(argv[1]);
+	data->tt_die = atoi(argv[2]);
+	data->tt_eat = atoi(argv[3]);
+	data->tt_sleep = atoi(argv[4]);
+	if (argc == 6)
+		data->n_times_eat = atoi(argv[5]);
+	return (0);
 }
