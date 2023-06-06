@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/06 20:45:39 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/06 21:02:24 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 # define PHILOSOPHERS_H
 
 # include <stdio.h> /* printf */
-# include <stdlib.h> /* malloc, EXIT_MACROS */
-# include <unistd.h> /* write */
+# include <stdlib.h> /* malloc, free, EXIT_MACROS */
+# include <unistd.h> /* write, usleep */
 # include <pthread.h> /* */
+# include <sys/time.h> /* gettimeofday */
 
 # define LEFT 0
 # define RIGHT 1

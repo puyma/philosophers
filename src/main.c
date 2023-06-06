@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/06 20:47:06 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/06 20:56:01 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	if (init_data(&data) == -1)
 		return (EXIT_FAILURE);
-	init_philosophers(&data);
+	if (init_philosophers(&data) == -1)
+		return (EXIT_FAILURE);
 	clean_data(&data);
 	return (EXIT_SUCCESS);
 }
@@ -32,18 +33,12 @@ int	main(int argc, char **argv)
 static int	check_args(int argc, char **argv, t_data *data)
 {
 	if (argc != 5 && argc != 6)
-	{
-		ft_putstr_fd(USAGE, STDERR_FILENO);
 		return (EXIT_FAILURE);
-	}
 	while (--argc)
 	{
 		if (argv[argc] == NULL || *argv[argc] == '\0'
 			|| str_isdigit(argv[argc]) != EXIT_SUCCESS)
-		{
-			ft_putstr_fd("Error: invalid argument(s)\n", STDERR_FILENO);
 			return (EXIT_FAILURE);
-		}
 	}
 	data->n_times_eat = -1;
 	data->n_philo = atoi(argv[1]);
@@ -54,7 +49,12 @@ static int	check_args(int argc, char **argv, t_data *data)
 	data->philo = NULL;
 	if (argc == 6)
 		data->n_times_eat = atoi(argv[5]);
-	return (0);
+	if (data->n_philo == 0)
+	{
+		ft_putstr_fd("Error\n", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }
 
 static int	init_data(t_data *data)
@@ -69,10 +69,7 @@ static int	init_data(t_data *data)
 		data->mutexes[i] = (t_mutex *) malloc(sizeof(t_mutex));
 		data->philo[i] = (t_philo *) malloc(sizeof(t_philo));
 		if (data->mutexes[i] == NULL || data->philo[i] == NULL)
-		{
-			ft_putstr_fd("Failed init_mutex\n", STDERR_FILENO);
 			return (EXIT_FAILURE);
-		}
 		data->philo[i]->is_alive = 1;
 		data->philo[i]->id = i;
 		++i;
@@ -92,7 +89,7 @@ int	init_philosophers(t_data *data)
 		philo->spoon[0] = data->mutexes[which_fork(i, data->n_philo, LEFT)];
 		philo->spoon[1] = data->mutexes[which_fork(i, data->n_philo, RIGHT)];
 		if (pthread_create(&philo->th, NULL, &routine, philo) != 0)
-			perror("Failed to created thread");
+			return (EXIT_FAILURE);
 		++i;
 	}
 	i = 0;

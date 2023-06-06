@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 18:47:35 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/06 20:46:06 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/06 21:03:50 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,6 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *) arg;
-	printf("It's me, mario [%d]\n", philo->id);
+	printf("[%d] It's me, mario [%d]\n", 20, philo->id);
 	return (NULL);
 }
