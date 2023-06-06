@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/06 19:29:10 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/06 20:47:06 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static int	check_args(int argc, char **argv, t_data *data)
 	data->tt_die = atoi(argv[2]);
 	data->tt_eat = atoi(argv[3]);
 	data->tt_sleep = atoi(argv[4]);
+	data->mutexes = NULL;
+	data->philo = NULL;
 	if (argc == 6)
 		data->n_times_eat = atoi(argv[5]);
 	return (0);
@@ -71,6 +73,34 @@ static int	init_data(t_data *data)
 			ft_putstr_fd("Failed init_mutex\n", STDERR_FILENO);
 			return (EXIT_FAILURE);
 		}
+		data->philo[i]->is_alive = 1;
+		data->philo[i]->id = i;
+		++i;
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	init_philosophers(t_data *data)
+{
+	t_philo	*philo;
+	int		i;
+
+	i = 0;
+	while (i < data->n_philo)
+	{
+		philo = data->philo[i];
+		philo->spoon[0] = data->mutexes[which_fork(i, data->n_philo, LEFT)];
+		philo->spoon[1] = data->mutexes[which_fork(i, data->n_philo, RIGHT)];
+		if (pthread_create(&philo->th, NULL, &routine, philo) != 0)
+			perror("Failed to created thread");
+		++i;
+	}
+	i = 0;
+	while (i < data->n_philo)
+	{
+		philo = data->philo[i];
+		if (pthread_join(philo->th, NULL) != 0)
+			perror("Failed to join thread");
 		++i;
 	}
 	return (EXIT_SUCCESS);

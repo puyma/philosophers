@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/06 19:48:29 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/06 20:45:39 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef pthread_mutex_t	t_mutex;
 
 typedef struct s_philosopher
 {
+	int			id;
 	int			is_alive;
 	t_mutex		*spoon[2];
 	pthread_t	th;
