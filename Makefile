@@ -6,7 +6,7 @@
 #    By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/01 19:17:04 by mpuig-ma          #+#    #+#              #
-#    Updated: 2023/06/05 19:28:20 by mpuig-ma         ###   ########.fr        #
+#    Updated: 2023/06/06 19:28:57 by mpuig-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,9 @@ NOSTYLE		:=	\033[0m
 STYLE		:=	\033[0;32m
 
 SRC_FILES	:=	$(SRC_DIR)/main.c \
-				$(SRC_DIR)/utils.c
+				$(SRC_DIR)/philosophers.c \
+				$(SRC_DIR)/routine.c \
+				$(SRC_DIR)/utils.c \
 
 OBJ_FILES	=	$(SRC_FILES:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEP_FILES	=	$(OBJ_FILES:.o=.d)
@@ -35,7 +37,7 @@ DEP_FILES	=	$(OBJ_FILES:.o=.d)
 
 all: $(NAME)
 
-$(NAME): $(OBJ_FILES) $(DEP_FILES) #header?
+$(NAME): $(OBJ_FILES) $(DEP_FILES) $(SRC_DIR)/philosophers.h
 	$(CC) $(INC) $(CFLAGS) $(OBJ_FILES) -o $(NAME)
 	@echo "Built $(STYLE)$(basename $@)$(NOSTYLE)"
 
