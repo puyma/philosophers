@@ -6,35 +6,26 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/06 18:36:49 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/06 19:29:10 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
 static int	check_args(int argc, char **argv, t_data *data);
-static int	init_mutex(t_data *data);
-int			clean_death(t_data *data);
+static int	init_data(t_data *data);
+void		clean_data(t_data *data);
 
 int	main(int argc, char **argv)
 {
 	t_data	data;
-	int		i;
 
 	if (check_args(argc, argv, &data) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (init_mutex(&data) == -1)
+	if (init_data(&data) == -1)
 		return (EXIT_FAILURE);
-	// init philosophers 
-	i = 0;
-	while (i < data.n_philo)
-	{
-		printf("Philosopher %d will try to pick L: %d, R: %d\n",
-			i, which_fork(i, data.n_philo, LEFT),
-			which_fork(i, data.n_philo, RIGHT));
-		++i;
-	}
-	clean_death(&data);
+	init_philosophers(&data);
+	clean_data(&data);
 	return (EXIT_SUCCESS);
 }
 
@@ -64,18 +55,18 @@ static int	check_args(int argc, char **argv, t_data *data)
 	return (0);
 }
 
-static int	init_mutex(t_data *data)
+static int	init_data(t_data *data)
 {
 	int	i;
 
-	data->mutexes = (pthread_mutex_t **)
-		malloc(sizeof(pthread_mutex_t *) * data->n_philo);
 	i = 0;
+	data->mutexes = (t_mutex **) malloc(sizeof(t_mutex *) * data->n_philo);
+	data->philo = (t_philo **) malloc(sizeof(t_philo *) * data->n_philo);
 	while (i < data->n_philo)
 	{
-		data->mutexes[i] = (pthread_mutex_t *)
-			malloc(sizeof(pthread_mutex_t));
-		if (data->mutexes[i] == NULL)
+		data->mutexes[i] = (t_mutex *) malloc(sizeof(t_mutex));
+		data->philo[i] = (t_philo *) malloc(sizeof(t_philo));
+		if (data->mutexes[i] == NULL || data->philo[i] == NULL)
 		{
 			ft_putstr_fd("Failed init_mutex\n", STDERR_FILENO);
 			return (EXIT_FAILURE);
@@ -85,7 +76,7 @@ static int	init_mutex(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-int	clean_death(t_data *data)
+void	clean_data(t_data *data)
 {
 	int	i;
 
@@ -93,8 +84,9 @@ int	clean_death(t_data *data)
 	while (i < data->n_philo)
 	{
 		free(data->mutexes[i]);
+		free(data->philo[i]);
 		++i;
 	}
 	free(data->mutexes);
-	return (EXIT_SUCCESS);
+	free(data->philo);
 }
