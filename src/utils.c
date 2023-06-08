@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 18:07:50 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/06 18:24:39 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/08 19:10:51 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,19 @@ int	ft_putstr_fd(char *s, int fd)
 	while (*s)
 		write(fd, s++, 1);
 	return (0);
+}
+
+void	clean_data(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->n_philo)
+	{
+		free(data->mutexes[i]);
+		free(data->philo[i]);
+		++i;
+	}
+	free(data->mutexes);
+	free(data->philo);
 }

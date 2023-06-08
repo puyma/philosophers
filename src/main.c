@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/06 20:56:01 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/08 19:15:51 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,19 +101,4 @@ int	init_philosophers(t_data *data)
 		++i;
 	}
 	return (EXIT_SUCCESS);
-}
-
-void	clean_data(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->n_philo)
-	{
-		free(data->mutexes[i]);
-		free(data->philo[i]);
-		++i;
-	}
-	free(data->mutexes);
-	free(data->philo);
 }

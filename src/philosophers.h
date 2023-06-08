@@ -6,18 +6,19 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/06 21:02:24 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/08 19:14:08 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
+# include <pthread.h> /* pthread_* */
 # include <stdio.h> /* printf */
 # include <stdlib.h> /* malloc, free, EXIT_MACROS */
-# include <unistd.h> /* write, usleep */
-# include <pthread.h> /* */
+# include <string.h> /* memset */
 # include <sys/time.h> /* gettimeofday */
+# include <unistd.h> /* write, usleep */
 
 # define LEFT 0
 # define RIGHT 1
