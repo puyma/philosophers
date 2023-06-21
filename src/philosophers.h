@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/08 19:14:08 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/21 19:58:01 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,33 +17,40 @@
 # include <stdio.h> /* printf */
 # include <stdlib.h> /* malloc, free, EXIT_MACROS */
 # include <string.h> /* memset */
-# include <sys/time.h> /* gettimeofday */
+# include <sys/time.h> /* gettimeofday, struct timeval */
 # include <unistd.h> /* write, usleep */
 
-# define LEFT 0
-# define RIGHT 1
-# define USAGE "Usage: n_philosophers tt_die tt_eat tt_sleep [n_eat_times]\n"
+# define LEFT	0
+# define RIGHT	1
+# define USAGE	"Usage: n_philosophers tt_die tt_eat tt_sleep [n_eat_times]\n"
+
+# define TRUE	1
+# define FALSE	0
 
 typedef pthread_mutex_t	t_mutex;
 
 typedef struct s_philosopher
 {
-	int			id;
-	int			is_alive;
-	t_mutex		*spoon[2];
-	pthread_t	th;
-}				t_philo;
+	int				id;
+	int				is_alive;
+	t_mutex			*spoon[2];
+	struct timeval	*init_time;
+	t_mutex			*general_mutex_ptr;
+	pthread_t		th;
+}					t_philo;
 
 typedef struct s_data
 {
-	int			n_philo;
-	int			tt_die;
-	int			tt_eat;
-	int			tt_sleep;
-	int			n_times_eat;
-	t_mutex		**mutexes;
-	t_philo		**philo;
-}				t_data;
+	int				n_philo;
+	int				tt_die;
+	int				tt_eat;
+	int				tt_sleep;
+	int				n_times_eat;
+	struct timeval	time;
+	t_mutex			general_mutex;
+	t_mutex			**mutexes;
+	t_philo			**philo;
+}					t_data;
 
 /* philosophers.c */
 int		init_philosophers(t_data *data);

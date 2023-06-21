@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/08 19:15:51 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/21 20:00:17 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	if (init_philosophers(&data) == -1)
 		return (EXIT_FAILURE);
-	clean_data(&data);
+	//clean_data(&data);
 	return (EXIT_SUCCESS);
 }
 
@@ -62,6 +62,7 @@ static int	init_data(t_data *data)
 	int	i;
 
 	i = 0;
+	gettimeofday(&data->time, NULL);
 	data->mutexes = (t_mutex **) malloc(sizeof(t_mutex *) * data->n_philo);
 	data->philo = (t_philo **) malloc(sizeof(t_philo *) * data->n_philo);
 	while (i < data->n_philo)
@@ -86,6 +87,8 @@ int	init_philosophers(t_data *data)
 	while (i < data->n_philo)
 	{
 		philo = data->philo[i];
+		philo->init_time = &data->time;
+		philo->general_mutex_ptr = &data->general_mutex;
 		philo->spoon[0] = data->mutexes[which_fork(i, data->n_philo, LEFT)];
 		philo->spoon[1] = data->mutexes[which_fork(i, data->n_philo, RIGHT)];
 		if (pthread_create(&philo->th, NULL, &routine, philo) != 0)
