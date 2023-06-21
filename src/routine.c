@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 18:47:35 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/21 20:45:48 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/21 20:48:13 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,3 @@ int	log_stuff(t_philo *philo, char *action)
 	pthread_mutex_unlock(philo->general_mutex_ptr);
 	return (EXIT_SUCCESS);
 }
-
-
