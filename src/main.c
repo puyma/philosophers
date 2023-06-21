@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/21 20:22:36 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/21 20:47:34 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static int	check_args(int argc, char **argv, t_data *data);
 static int	init_data(t_data *data);
+static int	init_philosophers(t_data *data);
+static int	deinit_philosophers(t_data *data);
 void		clean_data(t_data *data);
 
 int	main(int argc, char **argv)
@@ -25,6 +27,8 @@ int	main(int argc, char **argv)
 	if (init_data(&data) == -1)
 		return (EXIT_FAILURE);
 	if (init_philosophers(&data) == -1)
+		return (EXIT_FAILURE);
+	if (deinit_philosophers(&data) == -1)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -89,6 +93,11 @@ int	init_philosophers(t_data *data)
 	{
 		philo = data->philo[i];
 		philo->init_time = &data->time;
+		philo->last_meal = &data->time;
+		philo->tt_die = data->tt_die;
+		philo->tt_eat = data->tt_eat;
+		philo->tt_sleep = data->tt_sleep;
+		philo->n_times_eat = data->n_times_eat;
 		philo->general_mutex_ptr = &data->general_mutex;
 		philo->spoon[0] = data->mutexes[which_fork(i, data->n_philo, LEFT)];
 		philo->spoon[1] = data->mutexes[which_fork(i, data->n_philo, RIGHT)];
@@ -96,6 +105,14 @@ int	init_philosophers(t_data *data)
 			return (EXIT_FAILURE);
 		++i;
 	}
+	return (EXIT_SUCCESS);
+}
+
+int	deinit_philosophers(t_data *data)
+{
+	t_philo	*philo;
+	int		i;
+
 	i = 0;
 	while (i < data->n_philo)
 	{

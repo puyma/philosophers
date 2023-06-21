@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 18:47:35 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/21 20:22:55 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/21 20:45:48 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,17 @@ int	log_stuff(t_philo *philo, char *action);
 
 void	*routine(void *arg)
 {
+	time_t	time;
 	t_philo	*philo;
 
 	philo = (t_philo *) arg;
-	pthread_mutex_lock(philo->general_mutex_ptr);
+	gettimeofday(&philo->timestamp, NULL);
+	time = (philo->last_meal->tv_usec - philo->timestamp.tv_usec) / 1000;
+	while (time < philo->tt_die)
+	{
+		gettimeofday(&philo->timestamp, NULL);
+	}
 	log_stuff(philo, FORK);
-	pthread_mutex_unlock(philo->general_mutex_ptr);
-	(void) log_stuff;
 	return (NULL);
 }
 
@@ -33,6 +37,10 @@ int	log_stuff(t_philo *philo, char *action)
 
 	gettimeofday(&timeval, NULL);
 	time = (timeval.tv_usec - philo->init_time->tv_usec) / 1000;
-	printf("[%jd] %d %s\n", time, philo->id, action);
+	pthread_mutex_lock(philo->general_mutex_ptr);
+	printf("[%jd] %d %s\n", time, philo->id + 1, action);
+	pthread_mutex_unlock(philo->general_mutex_ptr);
 	return (EXIT_SUCCESS);
 }
+
+
