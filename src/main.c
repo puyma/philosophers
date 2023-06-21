@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/21 20:00:17 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/21 20:22:36 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	if (init_philosophers(&data) == -1)
 		return (EXIT_FAILURE);
-	//clean_data(&data);
 	return (EXIT_SUCCESS);
 }
+
+//clean_data(&data);
 
 static int	check_args(int argc, char **argv, t_data *data)
 {
