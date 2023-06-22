@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/21 20:47:34 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/22 17:47:36 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	check_args(int argc, char **argv, t_data *data);
 static int	init_data(t_data *data);
 static int	init_philosophers(t_data *data);
-static int	deinit_philosophers(t_data *data);
+static int	launch_philosophers(t_data *data);
 void		clean_data(t_data *data);
 
 int	main(int argc, char **argv)
@@ -28,7 +28,7 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	if (init_philosophers(&data) == -1)
 		return (EXIT_FAILURE);
-	if (deinit_philosophers(&data) == -1)
+	if (launch_philosophers(&data) == -1)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -73,6 +73,7 @@ static int	init_data(t_data *data)
 	while (i < data->n_philo)
 	{
 		data->mutexes[i] = (t_mutex *) malloc(sizeof(t_mutex));
+		pthread_mutex_init(data->mutexes[i], NULL);
 		data->philo[i] = (t_philo *) malloc(sizeof(t_philo));
 		if (data->mutexes[i] == NULL || data->philo[i] == NULL)
 			return (EXIT_FAILURE);
@@ -83,7 +84,7 @@ static int	init_data(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-int	init_philosophers(t_data *data)
+static int	init_philosophers(t_data *data)
 {
 	t_philo	*philo;
 	int		i;
@@ -99,27 +100,43 @@ int	init_philosophers(t_data *data)
 		philo->tt_sleep = data->tt_sleep;
 		philo->n_times_eat = data->n_times_eat;
 		philo->general_mutex_ptr = &data->general_mutex;
+		printf("i: %d, which: %d, which %d\n", i, which_fork(i, data->n_philo, LEFT), which_fork(i, data->n_philo, RIGHT));
 		philo->spoon[0] = data->mutexes[which_fork(i, data->n_philo, LEFT)];
-		philo->spoon[1] = data->mutexes[which_fork(i, data->n_philo, RIGHT)];
-		if (pthread_create(&philo->th, NULL, &routine, philo) != 0)
-			return (EXIT_FAILURE);
+		if (data->n_philo < 2)
+		{
+			printf("hey\n");
+			philo->spoon[1] = philo->spoon[0];
+		}
+		else
+			philo->spoon[1] = data->mutexes[which_fork(i, data->n_philo, RIGHT)];
 		++i;
 	}
 	return (EXIT_SUCCESS);
 }
 
-int	deinit_philosophers(t_data *data)
+static int	launch_philosophers(t_data *data)
 {
-	t_philo	*philo;
-	int		i;
+	int	i;
 
+	i = 0;
+	gettimeofday(&data->time, NULL);
+	while (i < data->n_philo)
+	{
+		pthread_create(&data->philo[i]->th, NULL, &routine, data->philo[i]);
+		i += 2;
+	}
+	usleep(1000);
+	i = 1;
+	while (i < data->n_philo)
+	{
+		pthread_create(&data->philo[i]->th, NULL, &routine, data->philo[i]);
+		i += 2;
+	}
 	i = 0;
 	while (i < data->n_philo)
 	{
-		philo = data->philo[i];
-		if (pthread_join(philo->th, NULL) != 0)
+		if (pthread_join(data->philo[i++]->th, NULL) != 0)
 			perror("Failed to join thread");
-		++i;
 	}
 	return (EXIT_SUCCESS);
 }
