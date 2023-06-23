@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 18:07:50 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/08 19:10:51 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/23 11:53:46 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,10 @@ int	which_fork(int num, int total_num, int leftright)
 {
 	int	fork_number;
 
-	if (num == 0 && leftright == RIGHT)
+	if (leftright == LEFT)
+		fork_number = num;
+	else if (num == 0)
 		fork_number = total_num - 1;
-	else if (num == total_num - 1 && leftright == LEFT)
-		fork_number = 0;
-	else if (leftright == LEFT)
-		fork_number = num + 1;
 	else
 		fork_number = num - 1;
 	return (fork_number);
