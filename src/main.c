@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/22 17:47:36 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/23 13:19:29 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,13 @@ static int	init_philosophers(t_data *data)
 {
 	t_philo	*philo;
 	int		i;
+	int		forknum[2];
 
 	i = 0;
 	while (i < data->n_philo)
 	{
+		forknum[LEFT] = which_fork(i, data->n_philo, LEFT);
+		forknum[RIGHT] = which_fork(i, data->n_philo, RIGHT);
 		philo = data->philo[i];
 		philo->init_time = &data->time;
 		philo->last_meal = &data->time;
@@ -100,15 +103,8 @@ static int	init_philosophers(t_data *data)
 		philo->tt_sleep = data->tt_sleep;
 		philo->n_times_eat = data->n_times_eat;
 		philo->general_mutex_ptr = &data->general_mutex;
-		printf("i: %d, which: %d, which %d\n", i, which_fork(i, data->n_philo, LEFT), which_fork(i, data->n_philo, RIGHT));
-		philo->spoon[0] = data->mutexes[which_fork(i, data->n_philo, LEFT)];
-		if (data->n_philo < 2)
-		{
-			printf("hey\n");
-			philo->spoon[1] = philo->spoon[0];
-		}
-		else
-			philo->spoon[1] = data->mutexes[which_fork(i, data->n_philo, RIGHT)];
+		philo->spoon[0] = data->mutexes[forknum[LEFT]];
+		philo->spoon[1] = data->mutexes[forknum[RIGHT]];
 		++i;
 	}
 	return (EXIT_SUCCESS);
