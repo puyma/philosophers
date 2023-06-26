@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/21 20:46:45 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/26 12:32:32 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_philosopher
 	int				tt_die;
 	int				tt_eat;
 	int				tt_sleep;
+	int				tt_think;
 	int				n_times_eat;
 	t_mutex			*spoon[2];
 	struct timeval	*init_time;

@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/23 13:19:29 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/26 17:10:36 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	main(int argc, char **argv)
 
 static int	check_args(int argc, char **argv, t_data *data)
 {
+	const int	argc_cp = argc;
+
 	if (argc != 5 && argc != 6)
 		return (EXIT_FAILURE);
 	while (--argc)
@@ -47,12 +49,12 @@ static int	check_args(int argc, char **argv, t_data *data)
 	}
 	data->n_times_eat = -1;
 	data->n_philo = atoi(argv[1]);
-	data->tt_die = atoi(argv[2]);
-	data->tt_eat = atoi(argv[3]);
-	data->tt_sleep = atoi(argv[4]);
+	data->tt_die = atoi(argv[2]) * 1000;
+	data->tt_eat = atoi(argv[3]) * 1000;
+	data->tt_sleep = atoi(argv[4]) * 1000;
 	data->mutexes = NULL;
 	data->philo = NULL;
-	if (argc == 6)
+	if (argc_cp == 6)
 		data->n_times_eat = atoi(argv[5]);
 	if (data->n_philo == 0)
 	{
@@ -68,6 +70,7 @@ static int	init_data(t_data *data)
 
 	i = 0;
 	gettimeofday(&data->time, NULL);
+	pthread_mutex_init(&data->general_mutex, NULL);
 	data->mutexes = (t_mutex **) malloc(sizeof(t_mutex *) * data->n_philo);
 	data->philo = (t_philo **) malloc(sizeof(t_philo *) * data->n_philo);
 	while (i < data->n_philo)
@@ -77,7 +80,7 @@ static int	init_data(t_data *data)
 		data->philo[i] = (t_philo *) malloc(sizeof(t_philo));
 		if (data->mutexes[i] == NULL || data->philo[i] == NULL)
 			return (EXIT_FAILURE);
-		data->philo[i]->is_alive = 1;
+		data->philo[i]->is_alive = TRUE;
 		data->philo[i]->id = i;
 		++i;
 	}
@@ -101,6 +104,7 @@ static int	init_philosophers(t_data *data)
 		philo->tt_die = data->tt_die;
 		philo->tt_eat = data->tt_eat;
 		philo->tt_sleep = data->tt_sleep;
+		philo->tt_think = (data->tt_die - data->tt_eat + data->tt_sleep) * 1000;
 		philo->n_times_eat = data->n_times_eat;
 		philo->general_mutex_ptr = &data->general_mutex;
 		philo->spoon[0] = data->mutexes[forknum[LEFT]];
@@ -110,27 +114,66 @@ static int	init_philosophers(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+static int	log_stuff(t_philo *philo, char *action, time_t time)
+{
+	pthread_mutex_lock(philo->general_mutex_ptr);
+	printf("[%04jd] %d %s\n", time / 1000, philo->id + 1, action);
+	pthread_mutex_unlock(philo->general_mutex_ptr);
+	return (EXIT_SUCCESS);
+}
+
+int	anybody_death(t_data *data)
+{
+	int				i;
+	struct timeval	t;
+	time_t			time;
+
+	i = 0;
+	while (i < data->n_philo)
+	{
+		gettimeofday(&t, NULL);
+		time = data->philo[i]->last_meal->tv_usec - data->philo[i]->init_time->tv_usec;
+		if (time > data->tt_die)
+		{
+			log_stuff(data->philo[i], DIE, time);
+			pthread_mutex_lock(&data->general_mutex);
+			data->philo[i]->is_alive = FALSE;
+			return (TRUE);
+		}
+		if (data->philo[i]->is_alive == FALSE)
+			return (TRUE);
+		++i;
+	}
+	return (FALSE);
+}
+
 static int	launch_philosophers(t_data *data)
 {
 	int	i;
 
-	i = 0;
+	i = 1;
 	gettimeofday(&data->time, NULL);
 	while (i < data->n_philo)
 	{
 		pthread_create(&data->philo[i]->th, NULL, &routine, data->philo[i]);
 		i += 2;
 	}
-	usleep(1000);
-	i = 1;
+	i = 0;
+	usleep(100);
 	while (i < data->n_philo)
 	{
 		pthread_create(&data->philo[i]->th, NULL, &routine, data->philo[i]);
 		i += 2;
 	}
+	while (anybody_death(data) != TRUE)
+	{
+		continue ;
+	}
+	exit (0);
 	i = 0;
 	while (i < data->n_philo)
 	{
+		printf("joining: %d\n", i + 1);
 		if (pthread_join(data->philo[i++]->th, NULL) != 0)
 			perror("Failed to join thread");
 	}
