@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/27 18:03:58 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/27 18:28:26 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ static int	init_data(t_data *data)
 	while (i < data->n_philo)
 		init_philosopher(i++, data);
 	pthread_mutex_init(&data->general_mutex, NULL);
-	gettimeofday(&data->time, NULL);
 	return (EXIT_SUCCESS);
 }
 
@@ -91,7 +90,8 @@ static int	init_philosopher(int i, t_data *data)
 	forknum[RIGHT] = which_fork(i, data->n_philo, RIGHT);
 	data->philo[i]->id = i;
 	data->philo[i]->is_alive = TRUE;
-	data->philo[i]->init_time = &data->time;
+	data->philo[i]->n_eaten = 0;
+	data->philo[i]->init_time = &data->init_time;
 	data->philo[i]->tt_die = &data->tt_die;
 	data->philo[i]->tt_eat = &data->tt_eat;
 	data->philo[i]->tt_sleep = &data->tt_sleep;
@@ -106,7 +106,7 @@ static int	launch_philosophers(t_data *data)
 {
 	static int	i = 0;
 
-	gettimeofday(&data->time, NULL);
+	gettimeofday(&data->init_time, NULL);
 	while (i < data->n_philo)
 	{
 		pthread_create(&data->philo[i]->th, NULL, &routine, data->philo[i]);

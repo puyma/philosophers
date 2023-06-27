@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 18:47:35 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/27 18:07:13 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:10:18 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,11 @@ void	*routine(void *arg)
 	philo = (t_philo *) arg;
 	if (philo->id % 2 == 0)
 		usleep(100);
-	p_eat(philo);
+	while (philo->is_alive == TRUE)
+	{
+		p_eat(philo);
+		philo->is_alive = FALSE;
+	}
 	return (NULL);
 }
 
@@ -33,17 +37,22 @@ int	p_eat(t_philo *philo)
 	log_stuff(philo, SPOON, 0);
 	pthread_mutex_lock(philo->spoon[RIGHT]);
 	log_stuff(philo, SPOON, 0);
-	usleep(*(philo->tt_eat) * 100);
+	usleep(*(philo->tt_eat));
 	pthread_mutex_unlock(philo->spoon[LEFT]);
 	pthread_mutex_unlock(philo->spoon[RIGHT]);
-	log_stuff(philo, SLEEP, 0);
+	if (++philo->n_eaten >= *philo->n_times_eat)
+	{
+		log_stuff(philo, "  has eaten enough", 0);
+		usleep(*philo->tt_eat);
+		exit(0);
+	}
 	return (EXIT_SUCCESS);
 }
 
 int	p_wait(t_philo *philo, time_t tt_time, char *action)
 {
 	log_stuff(philo, action, 0);
-	usleep(tt_time * 100);
+	usleep(tt_time);
 	return (EXIT_SUCCESS);
 }
 

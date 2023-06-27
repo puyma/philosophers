@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/27 14:11:40 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/27 18:28:12 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_philosopher
 {
 	int				id;
 	int				is_alive;
+	int				n_eaten;
 	pthread_t		th;
 	t_mutex			*spoon[2];
 	struct timeval	*init_time;
@@ -55,7 +56,7 @@ typedef struct s_data
 	int				tt_eat;
 	int				tt_sleep;
 	int				n_times_eat;
-	struct timeval	time;
+	struct timeval	init_time;
 	t_mutex			general_mutex;
 	t_mutex			**mutexes;
 	t_philo			**philo;
