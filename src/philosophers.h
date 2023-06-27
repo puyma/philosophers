@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/27 13:48:35 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/27 14:11:40 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,14 @@ typedef struct s_philosopher
 {
 	int				id;
 	int				is_alive;
-	int				tt_die;
-	int				tt_eat;
-	int				tt_sleep;
-	int				tt_think;
-	int				n_times_eat;
 	pthread_t		th;
 	t_mutex			*spoon[2];
 	struct timeval	*init_time;
-	struct timeval	*last_meal;
-	struct timeval	timestamp;
+	int				*tt_die;
+	int				*tt_eat;
+	int				*tt_sleep;
+	int				*tt_think;
+	int				*n_times_eat;
 	t_mutex			*general_mutex_ptr;
 }					t_philo;
 
@@ -72,5 +70,6 @@ void	*routine(void *arg);
 int		which_fork(int num, int total_num, int leftright);
 int		str_isdigit(char *str);
 int		ft_putstr_fd(char *s, int fd);
+void	clean_data(t_data *data);
 
 #endif /* philosophers.h */
