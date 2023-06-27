@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/26 12:32:32 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/27 13:48:35 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,14 @@
 
 # define LEFT	0
 # define RIGHT	1
-# define USAGE	"Usage: n_philosophers tt_die tt_eat tt_sleep [n_eat_times]\n"
 # define TRUE	1
 # define FALSE	0
-
-# define FORK	"has taken a fork"
+# define SPOON	"has taken a fork"
 # define EAT	"is eating"
 # define SLEEP	"is sleeping"
 # define THINK	"is thinking"
 # define DIE	"died"
+# define USAGE	"Usage: n_philosophers tt_die tt_eat tt_sleep [n_eat_times]\n"
 
 typedef pthread_mutex_t	t_mutex;
 
@@ -43,12 +42,12 @@ typedef struct s_philosopher
 	int				tt_sleep;
 	int				tt_think;
 	int				n_times_eat;
+	pthread_t		th;
 	t_mutex			*spoon[2];
 	struct timeval	*init_time;
 	struct timeval	*last_meal;
 	struct timeval	timestamp;
 	t_mutex			*general_mutex_ptr;
-	pthread_t		th;
 }					t_philo;
 
 typedef struct s_data
