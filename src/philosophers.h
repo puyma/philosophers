@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/28 13:46:08 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:45:13 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_philosopher
 	int				n_eaten;
 	pthread_t		th;
 	t_mutex			*spoon[2];
-	struct timeval	*init_time;
+	long int		*init_time;
 	int				*tt_die;
 	int				*tt_eat;
 	int				*tt_sleep;
@@ -56,7 +56,7 @@ typedef struct s_data
 	int				tt_eat;
 	int				tt_sleep;
 	int				n_times_eat;
-	struct timeval	init_time;
+	long int		init_time;
 	t_mutex			general_mutex;
 	t_mutex			**mutexes;
 	t_philo			**philo;
@@ -65,13 +65,14 @@ typedef struct s_data
 /* philosophers.c */
 
 /* routine.c */
-void	*routine(void *arg);
+void		*routine(void *arg);
 
 /* utils.c */
-int		which_fork(int num, int total_num, int leftright);
-int		str_isdigit(char *str);
-int		ft_putstr_fd(char *s, int fd);
-void	clean_data(t_data *data);
-time_t	ft_gettime(void);
+int			which_fork(int num, int total_num, int leftright);
+int			str_isdigit(char *str);
+int			ft_putstr_fd(char *s, int fd);
+void		clean_data(t_data *data);
+long int	ft_gettime(void);
+int			ft_usleep(long int time);
 
 #endif /* philosophers.h */

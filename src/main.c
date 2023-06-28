@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/27 18:28:26 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:46:30 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ int	main(int argc, char **argv)
 	t_data	data;
 
 	if (check_args(argc, argv, &data) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
+		return (1);
 	if (init_data(&data) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
+		return (2);
 	if (launch_philosophers(&data) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
+		return (3);
 	return (EXIT_SUCCESS);
 }
 
@@ -43,14 +43,14 @@ static int	check_args(int argc, char **argv, t_data *data)
 			|| str_isdigit(argv[i]) != EXIT_SUCCESS)
 			return (EXIT_FAILURE);
 	}
-	if (data->n_philo == 0)
-		return (EXIT_FAILURE);
 	data->philo = NULL;
 	data->mutexes = NULL;
 	data->n_philo = atoi(argv[1]);
-	data->tt_die = atoi(argv[2]) * 1000;
-	data->tt_eat = atoi(argv[3]) * 1000;
-	data->tt_sleep = atoi(argv[4]) * 1000;
+	if (data->n_philo == 0)
+		return (EXIT_FAILURE);
+	data->tt_die = atoi(argv[2]);
+	data->tt_eat = atoi(argv[3]);
+	data->tt_sleep = atoi(argv[4]);
 	data->n_times_eat = -1;
 	if (argc == 6)
 		data->n_times_eat = atoi(argv[5]);
@@ -104,9 +104,10 @@ static int	init_philosopher(int i, t_data *data)
 
 static int	launch_philosophers(t_data *data)
 {
-	static int	i = 0;
+	int	i;
 
-	gettimeofday(&data->init_time, NULL);
+	i = 0;
+	data->init_time = ft_gettime();
 	while (i < data->n_philo)
 	{
 		pthread_create(&data->philo[i]->th, NULL, &routine, data->philo[i]);
@@ -114,12 +115,10 @@ static int	launch_philosophers(t_data *data)
 	}
 	while (1 != TRUE)
 		continue ;
-	i = 0;
-	while (i < data->n_philo)
+	while (i-- > 0)
 	{
 		if (pthread_join(data->philo[i]->th, NULL) != 0)
 			perror("Failed to join thread");
-		++i;
 	}
 	return (EXIT_SUCCESS);
 }

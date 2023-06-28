@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 18:07:50 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/28 13:44:32 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:45:00 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,22 @@ void	clean_data(t_data *data)
 	free(data->philo);
 }
 
-time_t	ft_gettime(void)
+long int	ft_gettime(void)
 {
-	time_t			time;
 	struct timeval	t;
 
 	gettimeofday(&t, NULL);
-	time = t.tv_usec;
-	return (time);
+	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
+}
+
+int	ft_usleep(long int time)
+{
+	const long int	t = ft_gettime();
+	time += t;
+
+	while (ft_gettime() < time)
+	{
+		usleep(10);
+	}
+	return (0);
 }
