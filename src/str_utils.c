@@ -1,29 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   str_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 18:07:50 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/28 17:45:00 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/28 18:13:48 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-int	which_fork(int num, int total_num, int leftright)
-{
-	int	fork_number;
-
-	if (leftright == LEFT)
-		fork_number = num;
-	else if (num == 0)
-		fork_number = total_num - 1;
-	else
-		fork_number = num - 1;
-	return (fork_number);
-}
 
 int	str_isdigit(char *str)
 {
@@ -46,37 +33,29 @@ int	ft_putstr_fd(char *s, int fd)
 	return (0);
 }
 
-void	clean_data(t_data *data)
+int	ft_atoi(const char *str)
 {
 	int	i;
+	int	n;
+	int	sign;
 
 	i = 0;
-	while (i < data->n_philo)
+	sign = 1;
+	n = 0;
+	if (str[i] == '\0')
+		return (0);
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
+		i++;
+	if (str[i] == '-' || str[i] == '+')
 	{
-		free(data->mutexes[i]);
-		free(data->philo[i]);
-		++i;
+		if (str[i] == '-')
+			sign *= -1;
+		i++;
 	}
-	free(data->mutexes);
-	free(data->philo);
-}
-
-long int	ft_gettime(void)
-{
-	struct timeval	t;
-
-	gettimeofday(&t, NULL);
-	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
-}
-
-int	ft_usleep(long int time)
-{
-	const long int	t = ft_gettime();
-	time += t;
-
-	while (ft_gettime() < time)
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		usleep(10);
+		n = n * 10 + str[i] - '0';
+		i++;
 	}
-	return (0);
+	return (n * sign);
 }

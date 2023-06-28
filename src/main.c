@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/28 17:46:30 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/28 18:14:12 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	check_args(int argc, char **argv, t_data *data);
 static int	init_data(t_data *data);
 static int	init_philosopher(int i, t_data *data);
-static int	launch_philosophers(t_data *data);
+static int	which_fork(int num, int total_num, int leftright);
 
 int	main(int argc, char **argv)
 {
@@ -48,12 +48,12 @@ static int	check_args(int argc, char **argv, t_data *data)
 	data->n_philo = atoi(argv[1]);
 	if (data->n_philo == 0)
 		return (EXIT_FAILURE);
-	data->tt_die = atoi(argv[2]);
-	data->tt_eat = atoi(argv[3]);
-	data->tt_sleep = atoi(argv[4]);
+	data->tt_die = ft_atoi(argv[2]);
+	data->tt_eat = ft_atoi(argv[3]);
+	data->tt_sleep = ft_atoi(argv[4]);
 	data->n_times_eat = -1;
 	if (argc == 6)
-		data->n_times_eat = atoi(argv[5]);
+		data->n_times_eat = ft_atoi(argv[5]);
 	return (EXIT_SUCCESS);
 }
 
@@ -102,23 +102,15 @@ static int	init_philosopher(int i, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-static int	launch_philosophers(t_data *data)
+static int	which_fork(int num, int total_num, int leftright)
 {
-	int	i;
+	int	fork_number;
 
-	i = 0;
-	data->init_time = ft_gettime();
-	while (i < data->n_philo)
-	{
-		pthread_create(&data->philo[i]->th, NULL, &routine, data->philo[i]);
-		++i;
-	}
-	while (1 != TRUE)
-		continue ;
-	while (i-- > 0)
-	{
-		if (pthread_join(data->philo[i]->th, NULL) != 0)
-			perror("Failed to join thread");
-	}
-	return (EXIT_SUCCESS);
+	if (leftright == LEFT)
+		fork_number = num;
+	else if (num == 0)
+		fork_number = total_num - 1;
+	else
+		fork_number = num - 1;
+	return (fork_number);
 }

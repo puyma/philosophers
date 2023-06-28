@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/28 17:45:13 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/28 18:12:51 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,21 @@ typedef struct s_data
 	t_philo			**philo;
 }					t_data;
 
-/* philosophers.c */
+/* clean.c */
+void		clean_data(t_data *data);
+
+/* launch.c */
+int			launch_philosophers(t_data *data);
 
 /* routine.c */
 void		*routine(void *arg);
 
-/* utils.c */
-int			which_fork(int num, int total_num, int leftright);
+/* str_utils.c */
 int			str_isdigit(char *str);
 int			ft_putstr_fd(char *s, int fd);
-void		clean_data(t_data *data);
+int			ft_atoi(const char *str);
+
+/* time_utils.c */
 long int	ft_gettime(void);
 int			ft_usleep(long int time);
 
