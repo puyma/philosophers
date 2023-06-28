@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/28 18:14:12 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/28 18:54:28 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ int	main(int argc, char **argv)
 	t_data	data;
 
 	if (check_args(argc, argv, &data) == EXIT_FAILURE)
+	{
+		printf("%s", USAGE);
 		return (1);
+	}
 	if (init_data(&data) == EXIT_FAILURE)
 		return (2);
 	if (launch_philosophers(&data) == EXIT_FAILURE)
@@ -92,6 +95,7 @@ static int	init_philosopher(int i, t_data *data)
 	data->philo[i]->is_alive = TRUE;
 	data->philo[i]->n_eaten = 0;
 	data->philo[i]->init_time = &data->init_time;
+	data->philo[i]->last_meal = data->init_time;
 	data->philo[i]->tt_die = &data->tt_die;
 	data->philo[i]->tt_eat = &data->tt_eat;
 	data->philo[i]->tt_sleep = &data->tt_sleep;
