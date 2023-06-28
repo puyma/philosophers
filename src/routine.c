@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 18:47:35 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/27 19:10:18 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/28 13:47:48 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	p_eat(t_philo *philo)
 	pthread_mutex_unlock(philo->spoon[RIGHT]);
 	if (++philo->n_eaten >= *philo->n_times_eat)
 	{
-		log_stuff(philo, "  has eaten enough", 0);
+		log_stuff(philo, SLEEP, ft_gettime() - philo->init_time->tv_usec);
 		usleep(*philo->tt_eat);
 		exit(0);
 	}
@@ -59,7 +59,7 @@ int	p_wait(t_philo *philo, time_t tt_time, char *action)
 int	log_stuff(t_philo *philo, char *action, time_t time)
 {
 	pthread_mutex_lock(philo->general_mutex_ptr);
-	printf("[%jd] %d %s\n", time / 1000, philo->id + 1, action);
+	printf("%6jd %d %s\n", time / 1000, philo->id + 1, action);
 	pthread_mutex_unlock(philo->general_mutex_ptr);
 	return (EXIT_SUCCESS);
 }

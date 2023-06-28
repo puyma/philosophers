@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/27 18:28:12 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/28 13:46:08 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,6 @@ int		which_fork(int num, int total_num, int leftright);
 int		str_isdigit(char *str);
 int		ft_putstr_fd(char *s, int fd);
 void	clean_data(t_data *data);
+time_t	ft_gettime(void);
 
 #endif /* philosophers.h */

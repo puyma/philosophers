@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 18:07:50 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/23 11:53:46 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/28 13:44:32 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,14 @@ void	clean_data(t_data *data)
 	}
 	free(data->mutexes);
 	free(data->philo);
+}
+
+time_t	ft_gettime(void)
+{
+	time_t			time;
+	struct timeval	t;
+
+	gettimeofday(&t, NULL);
+	time = t.tv_usec;
+	return (time);
 }
