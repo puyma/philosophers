@@ -6,7 +6,7 @@
 #    By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/01 19:17:04 by mpuig-ma          #+#    #+#              #
-#    Updated: 2023/06/29 12:19:05 by mpuig-ma         ###   ########.fr        #
+#    Updated: 2023/06/29 17:55:15 by mpuig-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRC_DIR		:=	src
 CC			:=	gcc
 CFLAGS		:=	-Wall -Werror -Wextra
 CFLAGS		+=	-MMD
+LDFLAGS		:=	-pthread
 #CFLAGS		+=	-g -fsanitize='address,undefined'
 INC			:=	-I $(SRC_DIR)
 RM			:=	rm -rf
@@ -48,11 +49,11 @@ BDEP_FILES	=	$(BOBJ_FILES:.o=.d)
 all: $(NAME)
 
 $(NAME): $(OBJ_FILES) $(DEP_FILES) $(SRC_DIR)/philosophers.h
-	$(CC) $(INC) $(CFLAGS) $(OBJ_FILES) -o $(NAME)
+	$(CC) $(INC) $(CFLAGS) $(OBJ_FILES) $(LDFLAGS) -o $(NAME)
 	@echo "Built $(STYLE)$(basename $@)$(NOSTYLE)"
 
 bonus: $(BOBJ_FILES) $(BDEP_FILES) $(SRC_DIR)/philosophers.h
-	$(CC) $(INC) $(CFLAGS) $(BOBJ_FILES) -o philo_$(basename $@)
+	$(CC) $(INC) $(CFLAGS) $(BOBJ_FILES) $(LDFLAGS) -o philo_$(basename $@)
 	@echo "Built $(STYLE)philo_$(basename $@)$(NOSTYLE)"
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
