@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 18:04:02 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/29 16:44:03 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/29 18:49:47 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	ft_launch_philosophers(t_data *data)
 	while (ft_anybody_death(data) == -1)
 		;
 	pthread_mutex_lock(&data->general_mutex);
-	printf("%8ld %3d %s\n", (ft_gettime() - data->init_time), ft_anybody_death(data) + 1, DIE);
+	printf("%8ld %3d %s\n", (ft_gettime() - data->init_time),
+		ft_anybody_death(data) + 1, DIE);
 	ft_kill_everybody(data);
 	pthread_mutex_unlock(&data->general_mutex);
 	while (i-- > 0)
