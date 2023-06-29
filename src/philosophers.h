@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/29 11:14:05 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/29 12:16:33 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,14 @@
 
 # include <pthread.h> /* pthread_* */
 # include <stdio.h> /* printf */
-# include <stdlib.h> /* malloc, free, EXIT_MACROS */
+# include <stdlib.h> /* malloc, free, exit, EXIT_MACROS */
 # include <string.h> /* memset */
 # include <sys/time.h> /* gettimeofday, struct timeval */
-# include <unistd.h> /* write, usleep */
+# include <unistd.h> /* write, usleep, fork */
+
+# include <signal.h> /* kill */
+# include <sys/wait.h> /* waitpid */
+# include <semaphore.h> /* sem_* */
 
 # define LEFT	0
 # define RIGHT	1
