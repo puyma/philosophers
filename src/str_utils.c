@@ -6,13 +6,13 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 18:07:50 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/28 18:13:48 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/29 11:17:31 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	str_isdigit(char *str)
+int	ft_str_isdigit(char *str)
 {
 	char	*s;
 

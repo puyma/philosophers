@@ -6,15 +6,15 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 18:04:02 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/28 18:56:22 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/29 11:17:59 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-static int	anybody_death(t_data *data);
+static int	ft_anybody_death(t_data *data);
 
-int	launch_philosophers(t_data *data)
+int	ft_launch_philosophers(t_data *data)
 {
 	int	i;
 
@@ -22,22 +22,23 @@ int	launch_philosophers(t_data *data)
 	data->init_time = ft_gettime();
 	while (i < data->n_philo)
 	{
-		pthread_create(&data->philo[i]->th, NULL, &routine, data->philo[i]);
+		pthread_create(&data->philo[i]->th, NULL, &ft_routine, data->philo[i]);
 		++i;
 	}
-	while (anybody_death(data) != TRUE)
+	ft_usleep((data->tt_eat));
+	while (ft_anybody_death(data) != FALSE)
 	{
-		printf("fk ooff\n");
+		return (EXIT_FAILURE);
 	}
 	while (i-- > 0)
 	{
 		if (pthread_join(data->philo[i]->th, NULL) != 0)
-			perror("Failed to join thread");
+			printf("Failed to join thread\n");
 	}
 	return (EXIT_SUCCESS);
 }
 
-static int	anybody_death(t_data *data)
+static int	ft_anybody_death(t_data *data)
 {
 	int	i;
 
@@ -48,7 +49,8 @@ static int	anybody_death(t_data *data)
 			data->philo[i]->is_alive = FALSE;
 		if (data->philo[i]->is_alive == FALSE)
 		{
-			printf("%d die\n", i);
+			ft_log_stuff(data->philo[i], DIE);
+			pthread_mutex_lock(&data->general_mutex);
 			return (TRUE);
 		}
 		++i;

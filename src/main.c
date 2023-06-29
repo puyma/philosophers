@@ -6,34 +6,34 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/28 18:54:28 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/29 11:17:02 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-static int	check_args(int argc, char **argv, t_data *data);
-static int	init_data(t_data *data);
-static int	init_philosopher(int i, t_data *data);
-static int	which_fork(int num, int total_num, int leftright);
+static int	ft_check_args(int argc, char **argv, t_data *data);
+static int	ft_init_data(t_data *data);
+static int	ft_init_philosopher(int i, t_data *data);
+static int	ft_which_fork(int num, int total_num, int leftright);
 
 int	main(int argc, char **argv)
 {
 	t_data	data;
 
-	if (check_args(argc, argv, &data) == EXIT_FAILURE)
+	if (ft_check_args(argc, argv, &data) == EXIT_FAILURE)
 	{
 		printf("%s", USAGE);
 		return (1);
 	}
-	if (init_data(&data) == EXIT_FAILURE)
+	if (ft_init_data(&data) == EXIT_FAILURE)
 		return (2);
-	if (launch_philosophers(&data) == EXIT_FAILURE)
+	if (ft_launch_philosophers(&data) == EXIT_FAILURE)
 		return (3);
 	return (EXIT_SUCCESS);
 }
 
-static int	check_args(int argc, char **argv, t_data *data)
+static int	ft_check_args(int argc, char **argv, t_data *data)
 {
 	int	i;
 
@@ -43,12 +43,12 @@ static int	check_args(int argc, char **argv, t_data *data)
 	while (--i)
 	{
 		if (argv[i] == NULL || *argv[i] == '\0'
-			|| str_isdigit(argv[i]) != EXIT_SUCCESS)
+			|| ft_str_isdigit(argv[i]) != EXIT_SUCCESS)
 			return (EXIT_FAILURE);
 	}
 	data->philo = NULL;
 	data->mutexes = NULL;
-	data->n_philo = atoi(argv[1]);
+	data->n_philo = ft_atoi(argv[1]);
 	if (data->n_philo == 0)
 		return (EXIT_FAILURE);
 	data->tt_die = ft_atoi(argv[2]);
@@ -60,7 +60,7 @@ static int	check_args(int argc, char **argv, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-static int	init_data(t_data *data)
+static int	ft_init_data(t_data *data)
 {
 	int	i;
 
@@ -77,20 +77,20 @@ static int	init_data(t_data *data)
 	}
 	i = 0;
 	while (i < data->n_philo)
-		init_philosopher(i++, data);
+		ft_init_philosopher(i++, data);
 	pthread_mutex_init(&data->general_mutex, NULL);
 	return (EXIT_SUCCESS);
 }
 
-static int	init_philosopher(int i, t_data *data)
+static int	ft_init_philosopher(int i, t_data *data)
 {
 	int		forknum[2];
 
 	data->philo[i] = (t_philo *) malloc(sizeof(t_philo));
 	if (data->philo[i] == NULL)
 		return (EXIT_FAILURE);
-	forknum[LEFT] = which_fork(i, data->n_philo, LEFT);
-	forknum[RIGHT] = which_fork(i, data->n_philo, RIGHT);
+	forknum[LEFT] = ft_which_fork(i, data->n_philo, LEFT);
+	forknum[RIGHT] = ft_which_fork(i, data->n_philo, RIGHT);
 	data->philo[i]->id = i;
 	data->philo[i]->is_alive = TRUE;
 	data->philo[i]->n_eaten = 0;
@@ -106,7 +106,7 @@ static int	init_philosopher(int i, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-static int	which_fork(int num, int total_num, int leftright)
+static int	ft_which_fork(int num, int total_num, int leftright)
 {
 	int	fork_number;
 

@@ -6,57 +6,56 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 18:47:35 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/28 18:50:48 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/29 11:19:15 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	p_eat(t_philo *philo);
-int	p_wait(t_philo *philo, long int tt_time, char *action);
-int	log_stuff(t_philo *philo, char *action);
+int	ft_eat(t_philo *philo);
+int	ft_wait(t_philo *philo, long int tt_time, char *action);
 
-void	*routine(void *arg)
+void	*ft_routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *) arg;
-	if (philo->id % 2 != 0)
-		p_eat(philo);
+	if (philo->id % 2 == 0)
+		ft_eat(philo);
 	while (philo->is_alive == TRUE
 		&& (philo->n_eaten < *philo->n_times_eat || *philo->n_times_eat == -1))
 	{
-		p_wait(philo, *philo->tt_sleep, SLEEP);
-		log_stuff(philo, THINK);
-		p_eat(philo);
+		ft_wait(philo, *philo->tt_sleep, SLEEP);
+		ft_log_stuff(philo, THINK);
+		ft_eat(philo);
 	}
 	return (NULL);
 }
 
-int	p_eat(t_philo *philo)
+int	ft_eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->spoon[LEFT]);
-	log_stuff(philo, SPOON);
+	ft_log_stuff(philo, SPOON);
 	pthread_mutex_lock(philo->spoon[RIGHT]);
-	log_stuff(philo, SPOON);
+	ft_log_stuff(philo, SPOON);
 	ft_usleep(*(philo->tt_eat));
 	pthread_mutex_unlock(philo->spoon[LEFT]);
 	pthread_mutex_unlock(philo->spoon[RIGHT]);
 	philo->n_eaten++;
 	philo->last_meal = ft_gettime();
-	log_stuff(philo, EAT);
+	ft_log_stuff(philo, EAT);
 	ft_usleep(*philo->tt_sleep);
 	return (EXIT_SUCCESS);
 }
 
-int	p_wait(t_philo *philo, time_t tt_time, char *action)
+int	ft_wait(t_philo *philo, time_t tt_time, char *action)
 {
-	log_stuff(philo, action);
+	ft_log_stuff(philo, action);
 	ft_usleep(tt_time);
 	return (EXIT_SUCCESS);
 }
 
-int	log_stuff(t_philo *philo, char *action)
+int	ft_log_stuff(t_philo *philo, char *action)
 {
 	pthread_mutex_lock(philo->general_mutex_ptr);
 	printf("%8ld %3d %s\n", (ft_gettime() - *philo->init_time),
