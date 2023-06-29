@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/26 12:32:32 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:07:22 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,25 @@
 
 # include <pthread.h> /* pthread_* */
 # include <stdio.h> /* printf */
-# include <stdlib.h> /* malloc, free, EXIT_MACROS */
+# include <stdlib.h> /* malloc, free, exit, EXIT_MACROS */
 # include <string.h> /* memset */
 # include <sys/time.h> /* gettimeofday, struct timeval */
-# include <unistd.h> /* write, usleep */
+# include <unistd.h> /* write, usleep, fork */
+
+# include <signal.h> /* kill */
+# include <sys/wait.h> /* waitpid */
+# include <semaphore.h> /* sem_* */
 
 # define LEFT	0
 # define RIGHT	1
-# define USAGE	"Usage: n_philosophers tt_die tt_eat tt_sleep [n_eat_times]\n"
 # define TRUE	1
 # define FALSE	0
-
-# define FORK	"has taken a fork"
+# define SPOON	"has taken a fork"
 # define EAT	"is eating"
 # define SLEEP	"is sleeping"
 # define THINK	"is thinking"
 # define DIE	"died"
+# define USAGE	"Usage: n_philosophers tt_die tt_eat tt_sleep [n_eat_times]\n"
 
 typedef pthread_mutex_t	t_mutex;
 
@@ -38,17 +41,17 @@ typedef struct s_philosopher
 {
 	int				id;
 	int				is_alive;
-	int				tt_die;
-	int				tt_eat;
-	int				tt_sleep;
-	int				tt_think;
-	int				n_times_eat;
-	t_mutex			*spoon[2];
-	struct timeval	*init_time;
-	struct timeval	*last_meal;
-	struct timeval	timestamp;
-	t_mutex			*general_mutex_ptr;
+	int				n_eaten;
 	pthread_t		th;
+	t_mutex			*spoon[2];
+	long int		*init_time;
+	long int		last_meal;
+	int				*tt_die;
+	int				*tt_eat;
+	int				*tt_sleep;
+	int				*tt_think;
+	int				*n_times_eat;
+	t_mutex			*general_mutex_ptr;
 }					t_philo;
 
 typedef struct s_data
@@ -58,20 +61,28 @@ typedef struct s_data
 	int				tt_eat;
 	int				tt_sleep;
 	int				n_times_eat;
-	struct timeval	time;
+	long int		init_time;
 	t_mutex			general_mutex;
 	t_mutex			**mutexes;
 	t_philo			**philo;
 }					t_data;
 
-/* philosophers.c */
+/* clean.c */
+void		ft_clean_data(t_data *data);
+
+/* launch.c */
+int			ft_launch_philosophers(t_data *data);
 
 /* routine.c */
-void	*routine(void *arg);
+void		*ft_routine(void *arg);
 
-/* utils.c */
-int		which_fork(int num, int total_num, int leftright);
-int		str_isdigit(char *str);
-int		ft_putstr_fd(char *s, int fd);
+/* str_utils.c */
+int			ft_str_isdigit(char *str);
+int			ft_putstr_fd(char *s, int fd);
+int			ft_atoi(const char *str);
+
+/* time_utils.c */
+long int	ft_gettime(void);
+int			ft_usleep(long int time);
 
 #endif /* philosophers.h */
