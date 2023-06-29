@@ -6,7 +6,7 @@
 #    By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/01 19:17:04 by mpuig-ma          #+#    #+#              #
-#    Updated: 2023/06/29 12:10:57 by mpuig-ma         ###   ########.fr        #
+#    Updated: 2023/06/29 12:19:05 by mpuig-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,8 +52,8 @@ $(NAME): $(OBJ_FILES) $(DEP_FILES) $(SRC_DIR)/philosophers.h
 	@echo "Built $(STYLE)$(basename $@)$(NOSTYLE)"
 
 bonus: $(BOBJ_FILES) $(BDEP_FILES) $(SRC_DIR)/philosophers.h
-	$(CC) $(INC) $(CFLAGS) $(BOBJ_FILES) -o $(basename $@)
-	@echo "Built $(STYLE)$(basename $@)$(NOSTYLE)"
+	$(CC) $(INC) $(CFLAGS) $(BOBJ_FILES) -o philo_$(basename $@)
+	@echo "Built $(STYLE)philo_$(basename $@)$(NOSTYLE)"
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
@@ -64,7 +64,7 @@ clean:
 
 fclean: clean
 	$(RM) $(NAME)
-	$(RM) bonus
+	$(RM) philo_bonus
 
 re: fclean
 	$(MAKE)

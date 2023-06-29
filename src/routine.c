@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 18:47:35 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/29 11:19:15 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/29 12:43:10 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*ft_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *) arg;
-	if (philo->id % 2 == 0)
+	if (philo->id % 2 != 0)
 		ft_eat(philo);
 	while (philo->is_alive == TRUE
 		&& (philo->n_eaten < *philo->n_times_eat || *philo->n_times_eat == -1))
@@ -38,13 +38,12 @@ int	ft_eat(t_philo *philo)
 	ft_log_stuff(philo, SPOON);
 	pthread_mutex_lock(philo->spoon[RIGHT]);
 	ft_log_stuff(philo, SPOON);
+	ft_log_stuff(philo, EAT);
 	ft_usleep(*(philo->tt_eat));
 	pthread_mutex_unlock(philo->spoon[LEFT]);
 	pthread_mutex_unlock(philo->spoon[RIGHT]);
 	philo->n_eaten++;
 	philo->last_meal = ft_gettime();
-	ft_log_stuff(philo, EAT);
-	ft_usleep(*philo->tt_sleep);
 	return (EXIT_SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 18:04:02 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/29 11:17:59 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/29 12:45:55 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ int	ft_launch_philosophers(t_data *data)
 		pthread_create(&data->philo[i]->th, NULL, &ft_routine, data->philo[i]);
 		++i;
 	}
-	ft_usleep((data->tt_eat));
+	ft_usleep((data->tt_eat) * data->n_philo);
 	while (ft_anybody_death(data) != FALSE)
 	{
+		exit (0);
 		return (EXIT_FAILURE);
 	}
 	while (i-- > 0)
