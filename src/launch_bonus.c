@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 12:11:08 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/29 18:58:01 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:33:00 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	ft_launch_philosophers(t_data *data)
 	t_philo	*philo;
 
 	i = 0;
+	data->init_time = ft_gettime();
 	pid = (int *) malloc(sizeof(int) * data->n_philo);
 	if (pid == NULL)
 		ft_putstr_fd("Error allocation PIDs\n", STDERR_FILENO);
@@ -43,13 +44,12 @@ int	ft_launch_philosophers(t_data *data)
 static int	ft_process_job(t_philo *philo)
 {
 	pthread_create(&philo->th, NULL, &ft_routine, philo);
+	pthread_detach(philo->th);
+	ft_usleep(*philo->tt_die);
 	while (ft_gettime() - philo->last_meal > *philo->tt_die)
-	{
-		if (philo->is_alive == FALSE)
-			break ;
-	}
-	printf("MF died\n");
-	pthread_join(philo->th, NULL);
+		;
+	philo->is_alive = FALSE;
+	printf("%8ld %3d %s\n", (ft_gettime() - *philo->init_time),
+		philo->id + 1, DIE);
 	exit(EXIT_SUCCESS);
-	return (EXIT_SUCCESS);
 }

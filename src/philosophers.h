@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/29 12:16:33 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:07:22 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ int			ft_launch_philosophers(t_data *data);
 
 /* routine.c */
 void		*ft_routine(void *arg);
-
-int			ft_log_stuff(t_philo *philo, char *action);
 
 /* str_utils.c */
 int			ft_str_isdigit(char *str);

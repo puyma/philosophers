@@ -6,14 +6,15 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 18:47:35 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/29 16:27:38 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:07:45 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	ft_eat(t_philo *philo);
-int	ft_wait(t_philo *philo, long int tt_time, char *action);
+static int	ft_eat(t_philo *philo);
+static int	ft_wait(t_philo *philo, time_t tt_time, char *action);
+static int	ft_log_stuff(t_philo *philo, char *action);
 
 void	*ft_routine(void *arg)
 {
@@ -39,7 +40,7 @@ void	*ft_routine(void *arg)
 	return (NULL);
 }
 
-int	ft_eat(t_philo *philo)
+static int	ft_eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->spoon[LEFT]);
 	ft_log_stuff(philo, SPOON);
@@ -54,14 +55,14 @@ int	ft_eat(t_philo *philo)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_wait(t_philo *philo, time_t tt_time, char *action)
+static int	ft_wait(t_philo *philo, time_t tt_time, char *action)
 {
 	ft_log_stuff(philo, action);
 	ft_usleep(tt_time);
 	return (EXIT_SUCCESS);
 }
 
-int	ft_log_stuff(t_philo *philo, char *action)
+static int	ft_log_stuff(t_philo *philo, char *action)
 {
 	pthread_mutex_lock(philo->general_mutex_ptr);
 	if (philo->is_alive == FALSE)
