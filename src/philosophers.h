@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/29 19:07:22 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/30 12:15:48 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_data
 	int				n_times_eat;
 	long int		init_time;
 	t_mutex			general_mutex;
-	t_mutex			**mutexes;
+	t_mutex			**spoons;
 	t_philo			**philo;
 }					t_data;
 

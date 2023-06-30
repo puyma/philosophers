@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:17:11 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/29 12:07:48 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/30 12:15:33 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	ft_check_args(int argc, char **argv, t_data *data)
 			return (EXIT_FAILURE);
 	}
 	data->philo = NULL;
-	data->mutexes = NULL;
+	data->spoons = NULL;
 	data->n_philo = ft_atoi(argv[1]);
 	if (data->n_philo == 0)
 		return (EXIT_FAILURE);
@@ -65,14 +65,14 @@ static int	ft_init_data(t_data *data)
 	int	i;
 
 	i = 0;
-	data->mutexes = (t_mutex **) malloc(sizeof(t_mutex *) * data->n_philo);
+	data->spoons = (t_mutex **) malloc(sizeof(t_mutex *) * data->n_philo);
 	data->philo = (t_philo **) malloc(sizeof(t_philo *) * data->n_philo);
 	while (i < data->n_philo)
 	{
-		data->mutexes[i] = (t_mutex *) malloc(sizeof(t_mutex));
-		if (data->mutexes[i] == NULL)
+		data->spoons[i] = (t_mutex *) malloc(sizeof(t_mutex));
+		if (data->spoons[i] == NULL)
 			return (EXIT_FAILURE);
-		pthread_mutex_init(data->mutexes[i], NULL);
+		pthread_mutex_init(data->spoons[i], NULL);
 		++i;
 	}
 	i = 0;
@@ -100,8 +100,8 @@ static int	ft_init_philosopher(int i, t_data *data)
 	data->philo[i]->tt_eat = &data->tt_eat;
 	data->philo[i]->tt_sleep = &data->tt_sleep;
 	data->philo[i]->n_times_eat = &data->n_times_eat;
-	data->philo[i]->spoon[LEFT] = data->mutexes[forknum[LEFT]];
-	data->philo[i]->spoon[RIGHT] = data->mutexes[forknum[RIGHT]];
+	data->philo[i]->spoon[LEFT] = data->spoons[forknum[LEFT]];
+	data->philo[i]->spoon[RIGHT] = data->spoons[forknum[RIGHT]];
 	data->philo[i]->general_mutex_ptr = &data->general_mutex;
 	return (EXIT_SUCCESS);
 }
