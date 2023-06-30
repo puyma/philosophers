@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:18:31 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/30 12:15:48 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/30 13:50:11 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 # define THINK	"is thinking"
 # define DIE	"died"
 # define USAGE	"Usage: n_philosophers tt_die tt_eat tt_sleep [n_eat_times]\n"
+# define SEM_F	"/spoons"
+# define SEM_P	"/printer"
 
 typedef pthread_mutex_t	t_mutex;
 
@@ -43,7 +45,8 @@ typedef struct s_philosopher
 	int				is_alive;
 	int				n_eaten;
 	pthread_t		th;
-	t_mutex			*spoon[2];
+	sem_t			*spoons;
+	sem_t			*printer;
 	long int		*init_time;
 	long int		last_meal;
 	int				*tt_die;
@@ -51,7 +54,6 @@ typedef struct s_philosopher
 	int				*tt_sleep;
 	int				*tt_think;
 	int				*n_times_eat;
-	t_mutex			*general_mutex_ptr;
 }					t_philo;
 
 typedef struct s_data
@@ -62,8 +64,8 @@ typedef struct s_data
 	int				tt_sleep;
 	int				n_times_eat;
 	long int		init_time;
-	t_mutex			general_mutex;
-	t_mutex			**spoons;
+	sem_t			*spoons;
+	sem_t			*printer;
 	t_philo			**philo;
 }					t_data;
 

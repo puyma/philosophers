@@ -6,7 +6,7 @@
 #    By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/01 19:17:04 by mpuig-ma          #+#    #+#              #
-#    Updated: 2023/06/30 12:29:55 by mpuig-ma         ###   ########.fr        #
+#    Updated: 2023/06/30 13:21:23 by mpuig-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ NOSTYLE		:=	\033[0m
 STYLE		:=	\033[0;32m
 
 SRC_FILES	:=	$(SRC_DIR)/main_bonus.c \
+				$(SRC_DIR)/clean_bonus.c \
 				$(SRC_DIR)/launch_bonus.c \
 				$(SRC_DIR)/routine_bonus.c \
 				$(SRC_DIR)/str_utils.c \
