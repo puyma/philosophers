@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 18:08:06 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/29 11:14:36 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/30 12:48:52 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ void	ft_clean_data(t_data *data)
 	i = 0;
 	while (i < data->n_philo)
 	{
-		free(data->mutexes[i]);
+		pthread_mutex_destroy(data->spoons[i]);
+		free(data->spoons[i]);
 		free(data->philo[i]);
 		++i;
 	}
-	free(data->mutexes);
+	pthread_mutex_destroy(&data->general_mutex);
+	free(data->spoons);
 	free(data->philo);
 }
