@@ -6,7 +6,7 @@
 /*   By: mpuig-ma <mpuig-ma@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 12:06:27 by mpuig-ma          #+#    #+#             */
-/*   Updated: 2023/06/29 18:43:27 by mpuig-ma         ###   ########.fr       */
+/*   Updated: 2023/06/30 12:16:25 by mpuig-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	ft_check_args(int argc, char **argv, t_data *data)
 			return (EXIT_FAILURE);
 	}
 	data->philo = NULL;
-	data->mutexes = NULL;
+	data->spoons = NULL;
 	data->n_philo = ft_atoi(argv[1]);
 	if (data->n_philo == 0)
 		return (EXIT_FAILURE);
